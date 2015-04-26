@@ -1,0 +1,71 @@
+Developing Data Products Project Submission
+========================================================
+author: KK
+date: Mon Apr 27 02:53:31 2015
+
+Note: <br>
+The Date is an R expression that got evaluated and displayed
+
+Overview
+========================================================
+
+This deck of slides is for the "Developing Data Products" project
+
+- You can check out the ShinyApp project here:<br>
+https://kk-coursera.shinyapps.io/Project/
+
+Codes for the Project (Part 1)
+========================================================
+
+Server.R codes (Part of)
+
+        output$plot <- renderPlot({
+                
+                p <- ggplot(dataset(), aes_string(x=input$x, y=input$y)) + geom_point()
+                
+                if (input$color != 'None')
+                        p <- p + aes_string(color=input$color)
+                
+                facets <- paste(input$facet_row, '~', input$facet_col)
+                if (facets != '. ~ .')
+                        p <- p + facet_grid(facets)
+                
+                if (input$jitter)
+                        p <- p + geom_jitter()
+                if (input$smooth)
+                        p <- p + geom_smooth()
+                
+                print(p)
+                
+        }, height=700)
+
+
+Codes for the Project (Part 2)
+========================================================
+
+UI.R codes (Part of)
+
+        fluidPage(
+        
+        titlePanel("Developing Data Products - Project 2"),
+        
+        sidebarPanel(
+                
+                sliderInput('sampleSize', 'Sample Size', min=1, max=nrow(dataset),
+                            value=min(1000, nrow(dataset)), step=1000, round=0),
+                
+                selectInput('color', 'Color', c('None', names(dataset))),
+                selectInput('x', 'X', names(dataset)),
+                selectInput('y', 'Y', names(dataset), names(dataset)[[2]]),
+                
+                checkboxInput('jitter', 'Jitter'),
+                checkboxInput('smooth', 'Smooth'),
+                
+                selectInput('facet_row', 'Facet Row', c(None='.', names(dataset))),
+                selectInput('facet_col', 'Facet Column', c(None='.', names(dataset)))
+        ),
+
+Conclusion
+========================================================
+
+This deck of slides fulfils the requirements for the Presentation aspect of the project.
